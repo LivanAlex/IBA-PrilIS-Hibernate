@@ -9,10 +9,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-public class SessionFactoryImpl {
+public class SessionFactoryImpl implements AutoCloseable{
     private static SessionFactory sessionFactory;
 
-    private SessionFactoryImpl() {}
+    private SessionFactoryImpl() {
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -30,5 +31,10 @@ public class SessionFactoryImpl {
             }
         }
         return sessionFactory;
+    }
+
+    @Override
+    public void close() throws Exception {
+        sessionFactory.close();
     }
 }

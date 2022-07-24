@@ -18,12 +18,10 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public boolean addCompany(Company company) {
         boolean isAdded = false;
-        try {
-            Session session = SessionFactoryImpl.getSessionFactory().openSession();
+        try (Session session = SessionFactoryImpl.getSessionFactory().openSession()){
             Transaction tx = session.beginTransaction();
             session.save(company);
             tx.commit();
-            session.close();
             isAdded = true;
         }
         catch (NoClassDefFoundError e) {
@@ -52,13 +50,11 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public boolean deleteCompany(int id) {
         boolean isDeleted = false;
-        try {
-            Session session = SessionFactoryImpl.getSessionFactory().openSession();
+        try (Session session = SessionFactoryImpl.getSessionFactory().openSession()){
             Transaction tx = session.beginTransaction();
             Company company = session.load(Company.class, id);
             session.delete(company);
             tx.commit();
-            session.close();
             isDeleted = company != null;
         }
         catch (NoClassDefFoundError e) {

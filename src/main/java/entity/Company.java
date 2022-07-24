@@ -1,5 +1,7 @@
 package entity;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class Company {
     @Column(name = "company_id")
     private int companyId;
 
-    @Column(name = "company_name")
+    @Column(name = "company_name", unique = true)
     private String companyName;
 
     @Column(name = "company_country")
@@ -75,5 +77,18 @@ public class Company {
                 ", companyName='" + companyName + '\'' +
                 ", companyCountry='" + companyCountry + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Company company = (Company) o;
+        return companyId != 0 && companyId == company.companyId;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
